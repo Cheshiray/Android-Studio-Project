@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">score-indicator</string>
+    <string name="Text1">TeamA</string>
+    <string name="Text2">0</string>
+    <string name="Button1">+3 POINTS</string>
+    <string name="Button2">+2 POINTS</string>
+    <string name="Button3">+1 POINTS</string>
+    <string name="Button4">RESET</string>
 </resources>
