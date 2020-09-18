@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">temperature-converter</string>
+    <string name="text1">Hello world</string>
+    <string name="editText1">输入摄氏度：</string>
+    <string name="button1">开始转换</string>
+    <string name="text2">华氏度为：</string>
+</resources>
