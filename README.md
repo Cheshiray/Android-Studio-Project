@@ -5,3 +5,7 @@
   * score indicator -2.2
 
 * **week3:**
+  * ExchangeRate_v1 -3.1
+
+* **week4:**
+  * 
