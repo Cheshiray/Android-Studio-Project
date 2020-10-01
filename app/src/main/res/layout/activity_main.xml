@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <EditText
+        android:id="@+id/editText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="24dp"
+        android:ems="10"
+        android:gravity="center"
+        android:hint="@string/hint_1"
+        android:inputType="number"
+        android:text=""
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/textView"
+        android:textSize="32sp" />
+
+    <Button
+        android:id="@+id/button_dollar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="dollar"
+        android:layout_marginTop="32dp"
+        android:text="@string/btn_dollar"
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="32dp"/>
+
+    <Button
+        android:id="@+id/button_euro"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:onClick="dollar"
+        android:text="@string/btn_euro"
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="32dp"/>
+
+    <Button
+        android:id="@+id/button_won"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:onClick="dollar"
+        android:text="@string/btn_won"
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="32dp"/>
+
+    <Button
+        android:id="@+id/button_config"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="64dp"
+        android:onClick="openOne"
+        android:text="@string/btn_config"
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="32dp"/>
+</LinearLayout>
