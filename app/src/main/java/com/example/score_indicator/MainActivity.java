@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
+
     private Button btn1;
     private Button btn2;
     private Button btn3;
@@ -87,6 +88,25 @@ public class MainActivity extends AppCompatActivity {
                 tv2.setText("0");
             }
         });
+    }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        String score1 = ((TextView)findViewById(R.id.textView)).getText().toString();
+        String score2 = ((TextView)findViewById(R.id.textView4)).getText().toString();
+
+        outState.putString("teamA_score", score1);
+        outState.putString("teamB_score", score2);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        String scorea = savedInstanceState.getString("teamA_score");
+        String scoreb = savedInstanceState.getString("teamB_score");
+
+        ((TextView)findViewById(R.id.textView)).setText(scorea);
+        ((TextView)findViewById(R.id.textView4)).setText(scoreb);
     }
 }
