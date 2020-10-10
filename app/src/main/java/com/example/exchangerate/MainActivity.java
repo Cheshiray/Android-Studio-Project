@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity implements Runnable {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        SharedPreferences sp = getSharedPreferences("myrate", Activity.MODE_PRIVATE);
+        SharedPreferences sp = getSharedPreferences("myRate", Activity.MODE_PRIVATE);
         dollarRate = sp.getFloat("dollar_rate", 0.0f);
         euroRate = sp.getFloat("euro_rate", 0.0f);
         wonRate = sp.getFloat("won_rate", 0.0f);
@@ -60,10 +60,9 @@ public class MainActivity extends AppCompatActivity implements Runnable {
                     euroRate = bdl.getFloat("euro-Rate");
                     wonRate = bdl.getFloat("won-Rate");
 
-                    Log.i(TAG, "dollarRate:"+dollarRate);
-                    Log.i(TAG, "euroRate:"+euroRate);
-                    Log.i(TAG, "wonRate:"+wonRate);
-                    Toast.makeText(MainActivity.this, "汇率已更新", Toast.LENGTH_SHORT).show();
+                    Log.i(TAG, "dollarRate:" + dollarRate);
+                    Log.i(TAG, "euroRate:" + euroRate);
+                    Log.i(TAG, "wonRate:" + wonRate);
                 }
                 super.handleMessage(msg);
             }
@@ -124,11 +123,8 @@ public class MainActivity extends AppCompatActivity implements Runnable {
 
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId() == R.id.menu_1) {
-            Intent config = new Intent(this,Main2Activity.class);
-            config.putExtra("dollar_rate_key",dollarRate);
-            config.putExtra("euro_rate_key",euroRate);
-            config.putExtra("won_rate_key",wonRate);
-            startActivity(config);
+            Intent ExRateList = new Intent(this,Main3Activity.class);
+            startActivity(ExRateList);
         }
         return super.onOptionsItemSelected(item);
     }

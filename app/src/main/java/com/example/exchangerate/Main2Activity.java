@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
 
 public class Main2Activity extends AppCompatActivity {
     public static final String TAG="MainActivity2";
@@ -47,7 +46,7 @@ public class Main2Activity extends AppCompatActivity {
         float newEuro = Float.parseFloat(et3.getText().toString());
         float newWon = Float.parseFloat(et4.getText().toString());
 
-        SharedPreferences sp = getSharedPreferences("myrate", Activity.MODE_PRIVATE);
+        SharedPreferences sp = getSharedPreferences("myRate", Activity.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
         editor.putFloat("dollar_rate",newDollar);
         editor.putFloat("euro_rate",newEuro);

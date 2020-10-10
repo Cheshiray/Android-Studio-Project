@@ -8,7 +8,7 @@
     <string name="editText3">EuroRate</string>
     <string name="editText4">WonRate</string>
     <string name="btn_save">save</string>
-    <string name="menu_settings">settings</string>
+    <string name="menu_settings">ExRateList</string>
     <string name="textView">Hello</string>
     <string name="hint_1">input RMB</string>
     <string name="textView2">美元汇率：</string>
