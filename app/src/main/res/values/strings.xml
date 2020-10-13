@@ -14,4 +14,7 @@
     <string name="textView2">美元汇率：</string>
     <string name="textView3">欧元汇率：</string>
     <string name="textView4">韩元汇率：</string>
+    <string name="listTitle">Title</string>
+    <string name="listDetail">Detail</string>
+    <string name="hint_2">in put RMB</string>
 </resources>
