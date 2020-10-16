@@ -29,7 +29,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class MainActivity extends AppCompatActivity implements Runnable {
+public class  MainActivity extends AppCompatActivity implements Runnable {
     public static final  String TAG="MainActivity";
 
     Handler handler;

@@ -3,6 +3,8 @@ package com.example.exchangerate;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -11,6 +13,8 @@ import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,7 +37,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-public class Main3Activity extends AppCompatActivity implements Runnable, AdapterView.OnItemClickListener {
+public class Main3Activity extends AppCompatActivity implements Runnable, AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
     public static final  String TAG="MainActivity3";
 
     Handler handler;
@@ -49,6 +53,9 @@ public class Main3Activity extends AppCompatActivity implements Runnable, Adapte
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main3);
+
+        //Thread t = new Thread(this);
+        //t.start();
 
         SharedPreferences sp = getSharedPreferences("myList", Activity.MODE_PRIVATE);
         update = sp.getString("update_rate","0000.00.00:false");
@@ -67,7 +74,7 @@ public class Main3Activity extends AppCompatActivity implements Runnable, Adapte
         data1 = list3.toArray(new String[list3.size()]);
         data2 = list6.toArray(new String[list6.size()]);
 
-        ListView listView = (ListView) findViewById(R.id.myList);
+        GridView listView = (GridView) findViewById(R.id.myList);
         listItems = new ArrayList<HashMap<String, String>>();
         for (int i = 0; i < 27; i++) {
             HashMap<String, String> map = new HashMap<String, String>();
@@ -79,6 +86,8 @@ public class Main3Activity extends AppCompatActivity implements Runnable, Adapte
         MyAdapter myAdapter = new MyAdapter(this, R.layout.mylist, listItems);
         listView.setAdapter(myAdapter);
         listView.setOnItemClickListener(Main3Activity.this);
+        listView.setOnItemLongClickListener(this);
+        listView.setEmptyView(findViewById(R.id.nodata));
 
         SimpleDateFormat df = new SimpleDateFormat("yyyy.MM.dd");
         String OSTime = df.format(new Date());
@@ -102,7 +111,7 @@ public class Main3Activity extends AppCompatActivity implements Runnable, Adapte
                     data1 = bdl.getStringArray("Data1");
                     data2 = bdl.getStringArray("Data2");
 
-                    ListView listView2 = (ListView) findViewById(R.id.myList);
+                    GridView listView2 = (GridView) findViewById(R.id.myList);
                     listItems = new ArrayList<HashMap<String, String>>();
                     for (int i = 0; i < 27; i++) {
                         HashMap<String, String> map = new HashMap<String, String>();
@@ -114,6 +123,8 @@ public class Main3Activity extends AppCompatActivity implements Runnable, Adapte
                     MyAdapter myAdapter2 = new MyAdapter(Main3Activity.this, R.layout.mylist, listItems);
                     listView2.setAdapter(myAdapter2);
                     listView2.setOnItemClickListener(Main3Activity.this);
+                    listView2.setOnItemLongClickListener(Main3Activity.this);
+                    listView2.setEmptyView(findViewById(R.id.nodata));
 
                     SharedPreferences sp = getSharedPreferences("myList", Activity.MODE_PRIVATE);
                     SharedPreferences.Editor editor=sp.edit();
@@ -183,5 +194,21 @@ public class Main3Activity extends AppCompatActivity implements Runnable, Adapte
         calculation.putExtra("title", title2);
         calculation.putExtra("detail", Float.parseFloat(detail2));
         view.getContext().startActivity(calculation);
+    }
+
+    @Override
+    public boolean onItemLongClick(final AdapterView<?> parent, View view, final int position, long id) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("提示")
+                .setMessage("请确认是否删除当前数据")
+                .setPositiveButton("是", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        ArrayAdapter adapter = (ArrayAdapter) parent.getAdapter();
+                        adapter.remove(parent.getItemAtPosition(position));
+                    }
+                }).setNegativeButton("否", null);
+        builder.create().show();
+        return true;
     }
 }

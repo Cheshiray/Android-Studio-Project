@@ -17,4 +17,5 @@
     <string name="listTitle">Title</string>
     <string name="listDetail">Detail</string>
     <string name="hint_2">in put RMB</string>
+    <string name="nodata">No Data</string>
 </resources>
