@@ -2,8 +2,8 @@ package com.example.exchangerate;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -17,10 +17,6 @@ import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -28,12 +24,9 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
-
 import java.util.HashMap;
 import java.util.List;
 
@@ -41,67 +34,26 @@ public class Main3Activity extends AppCompatActivity implements Runnable, Adapte
     public static final  String TAG="MainActivity3";
 
     Handler handler;
+    RateManager manager;
 
     String[] data1;
     String[] data2;
-    String update;
-    List<String> list3 = new ArrayList<>();
-    List<String> list6 = new ArrayList<>();
     ArrayList<HashMap<String, String>> listItems;
+
+    private String logDate = "";
+    private final String DATE_SP_KEY = "lastRateDateStr";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main3);
 
-        //Thread t = new Thread(this);
-        //t.start();
+        SharedPreferences sp = getSharedPreferences("myrate", Context.MODE_PRIVATE);
+        logDate = sp.getString(DATE_SP_KEY, "");
+        Log.i("List","lastRateDateStr=" + logDate);
 
-        SharedPreferences sp = getSharedPreferences("myList", Activity.MODE_PRIVATE);
-        update = sp.getString("update_rate","0000.00.00:false");
-        String getStr = sp.getString("list","");
-        String getStr2 = sp.getString("list2","");
-
-        if (!getStr.equals("")) {
-            Gson gson1 = new Gson();
-            Gson gson3 = new Gson();
-            list3 = gson1.fromJson(getStr, new TypeToken<List<String>>() {
-            }.getType());
-            list6 = gson3.fromJson(getStr2, new TypeToken<List<String>>() {
-            }.getType());
-        }
-
-        data1 = list3.toArray(new String[list3.size()]);
-        data2 = list6.toArray(new String[list6.size()]);
-
-        GridView listView = (GridView) findViewById(R.id.myList);
-        listItems = new ArrayList<HashMap<String, String>>();
-        for (int i = 0; i < 27; i++) {
-            HashMap<String, String> map = new HashMap<String, String>();
-            map.put("ItemTitle", data1[i]);
-            map.put("ItemDetail", data2[i]);
-            listItems.add(map);
-        }
-
-        MyAdapter myAdapter = new MyAdapter(this, R.layout.mylist, listItems);
-        listView.setAdapter(myAdapter);
-        listView.setOnItemClickListener(Main3Activity.this);
-        listView.setOnItemLongClickListener(this);
-        listView.setEmptyView(findViewById(R.id.nodata));
-
-        SimpleDateFormat df = new SimpleDateFormat("yyyy.MM.dd");
-        String OSTime = df.format(new Date());
-
-        if (!OSTime.equals(update.substring(0,10))) {
-            update=OSTime+":false";
-        }
-
-        Log.i(TAG, "今日是否更新？"+update);
-
-        if (update.substring(11).equals("false")) {
-            Thread t = new Thread(this);
-            t.start();
-        }
+        Thread t = new Thread(this);
+        t.start();
 
         handler = new Handler() {
             @Override
@@ -111,7 +63,7 @@ public class Main3Activity extends AppCompatActivity implements Runnable, Adapte
                     data1 = bdl.getStringArray("Data1");
                     data2 = bdl.getStringArray("Data2");
 
-                    GridView listView2 = (GridView) findViewById(R.id.myList);
+                    GridView listView = (GridView) findViewById(R.id.myList);
                     listItems = new ArrayList<HashMap<String, String>>();
                     for (int i = 0; i < 27; i++) {
                         HashMap<String, String> map = new HashMap<String, String>();
@@ -120,27 +72,11 @@ public class Main3Activity extends AppCompatActivity implements Runnable, Adapte
                         listItems.add(map);
                     }
 
-                    MyAdapter myAdapter2 = new MyAdapter(Main3Activity.this, R.layout.mylist, listItems);
-                    listView2.setAdapter(myAdapter2);
-                    listView2.setOnItemClickListener(Main3Activity.this);
-                    listView2.setOnItemLongClickListener(Main3Activity.this);
-                    listView2.setEmptyView(findViewById(R.id.nodata));
-
-                    SharedPreferences sp = getSharedPreferences("myList", Activity.MODE_PRIVATE);
-                    SharedPreferences.Editor editor=sp.edit();
-                    List<String> list1 = Arrays.asList(data1);
-                    List<String> list5 = Arrays.asList(data2);
-                    Gson gson2 = new Gson();
-                    Gson gson4 = new Gson();
-                    String str = gson2.toJson(list1);
-                    String str3 = gson4.toJson(list5);
-                    editor.putString("update_rate",update.replace("false","true"));
-                    editor.putString("list", str);
-                    editor.putString("list2", str3);
-                    editor.commit();
-
-                    Toast.makeText(Main3Activity.this, "今日汇率已更新", Toast.LENGTH_SHORT).show();
-                    Log.i(TAG,"今日已更新");
+                    MyAdapter myAdapter = new MyAdapter(Main3Activity.this, R.layout.mylist, listItems);
+                    listView.setAdapter(myAdapter);
+                    listView.setOnItemClickListener(Main3Activity.this);
+                    listView.setOnItemLongClickListener(Main3Activity.this);
+                    listView.setEmptyView(findViewById(R.id.nodata));
                 }
                 super.handleMessage(msg);
             }
@@ -150,32 +86,69 @@ public class Main3Activity extends AppCompatActivity implements Runnable, Adapte
     @Override
     public void run() {
         Bundle bundle = new Bundle();
-        Document doc = null;
+        manager = new RateManager(this);
 
-        try {
-            doc = Jsoup.connect("https://www.usd-cny.com/bankofchina.htm").get();
-            Elements tables = doc.getElementsByTag("table");
-            Element table1 = tables.get(0);
+        String curDateStr = (new SimpleDateFormat("yyyy-MM-dd")).format(new Date());
+        Log.i("run","curDateStr:" + curDateStr + " logDate:" + logDate);
 
-            Elements tds = table1.getElementsByTag("td");
-            String[] list2 = new String[27];
-            String[] list4 = new String[27];
-            int j = 0;
-            float result;
-            for (int i = 0; i < tds.size(); i += 6) {
-                Element td1 = tds.get(i);
-                Element td2 = tds.get(i + 5);
-                result = 100f/Float.parseFloat(td2.text());
-                String str1 = td1.text();
-                String str2 = String.valueOf(result);
-                list2[j] = str1;
-                list4[j] = str2;
-                j++;
+        if (curDateStr.equals(logDate)) {
+            Log.i("run", "日期相等，从数据库中获取数据");
+
+            String[] name_1 = new String[27];
+            String[] value_1 = new String[27];
+
+            for (int i = 1; i < 28; i++) {
+                name_1[i-1] = manager.findById(i).getCurName();
+                value_1[i-1] = manager.findById(i).getCurRate();
             }
-            bundle.putStringArray("Data1", list2);
-            bundle.putStringArray("Data2", list4);
-        } catch (IOException e) {
-            e.printStackTrace();
+
+            bundle.putStringArray("Data1", name_1);
+            bundle.putStringArray("Data2", value_1);
+        } else {
+            Log.i("run","日期不相等，从网络中获取在线数据");
+            manager.deleteAll();
+            Log.i("db","删除所有记录");
+
+            Document doc = null;
+            try {
+                doc = Jsoup.connect("https://www.usd-cny.com/bankofchina.htm").get();
+                Elements tables = doc.getElementsByTag("table");
+                Element table1 = tables.get(0);
+
+                Elements tds = table1.getElementsByTag("td");
+                String[] name_2 = new String[27];
+                String[] value_2 = new String[27];
+                int j = 0;
+                float result;
+                for (int i = 0; i < tds.size(); i += 6) {
+                    Element td1 = tds.get(i);
+                    Element td2 = tds.get(i + 5);
+                    result = 100f / Float.parseFloat(td2.text());
+                    String str1 = td1.text();
+                    String str2 = String.valueOf(result);
+                    name_2[j] = str1;
+                    value_2[j] = str2;
+                    j++;
+                    manager.add(new RateItem(str1,str2));
+                }
+                bundle.putStringArray("Data1", name_2);
+                bundle.putStringArray("Data2", value_2);
+
+//                List<RateItem> testList = manager.listAll();
+//                for(RateItem i : testList) {
+//                    Log.i(TAG, "取出数据：[id="+i.getId()+"] Name="+i.getCurName()+" Rate="+i.getCurRate());
+//                }
+                Log.i("db","添加新记录集");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            //更新记录日期
+            SharedPreferences sp = getSharedPreferences("myrate", Context.MODE_PRIVATE);
+            SharedPreferences.Editor edit = sp.edit();
+            edit.putString(DATE_SP_KEY, curDateStr);
+            edit.commit();
+            Log.i("run","更新日期结束：" + curDateStr);
         }
 
         Message msg = handler.obtainMessage(7);
