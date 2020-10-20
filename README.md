@@ -19,3 +19,4 @@
   * ExchangeRate_v5 -6.2 *多栏列表+长按删除数据项*
 
 * **week7:**
+  * ExchangeRate_v6 -7.1 *用SQLite保存数据*
