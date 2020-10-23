@@ -19,4 +19,7 @@
   * ExchangeRate_v5 -6.2 *多栏列表+长按删除数据项*
 
 * **week7:**
-  * ExchangeRate_v6 -7.1 *用SQLite保存数据*
+  * ExchangeRate_v6 -7.1 *用 SQLite保存数据*
+  * MyPage -7.2 *viewPager实现视图翻页*
+
+* **week8:**
