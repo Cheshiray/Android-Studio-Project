@@ -1,4 +1,4 @@
-package com.example.exchangerate;
+package com.example.mypage;
 
 import org.junit.Test;
 

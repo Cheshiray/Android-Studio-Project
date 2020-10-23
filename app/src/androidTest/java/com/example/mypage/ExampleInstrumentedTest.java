@@ -1,4 +1,4 @@
-package com.example.exchangerate;
+package com.example.mypage;
 
 import android.content.Context;
 
@@ -22,6 +22,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
 
-        assertEquals("com.example.exchangerate", appContext.getPackageName());
+        assertEquals("com.example.mypage", appContext.getPackageName());
     }
 }
