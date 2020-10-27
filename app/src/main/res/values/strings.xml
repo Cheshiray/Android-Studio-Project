@@ -1,9 +1,7 @@
 <resources>
-    <string name="app_name">MyPage</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="label_first">First Page</string>
-    <string name="lable_second">Second Page</string>
-    <string name="lable_third">Third Page</string>
+    <string name="app_name">Vote</string>
+    <string name="lab_approve">赞同</string>
+    <string name="lab_object">否定</string>
+    <string name="lab_abstain">弃权</string>
+    <string name="hello_world">投票</string>
 </resources>
