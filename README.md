@@ -1,4 +1,6 @@
 # Android-Studio-Project
+## 作者：孙昊天
+## 学号：41811008
 
 * **week2:**
   * temperature converter -2.1 *简易的温度单位转换器*
@@ -23,3 +25,4 @@
   * MyPage -7.2 *viewPager实现视图翻页*
 
 * **week8:**
+  * Vote -8.1 *实现 C/S结构应用*
